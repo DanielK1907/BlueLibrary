@@ -10,5 +10,6 @@ namespace BlueLibrary.Models
         public int Id { get; set; }
         public String ImageURL { get; set; }
         public String ImageDescription { get; set; }
+        public Book Book { get; set; }
     }
 }

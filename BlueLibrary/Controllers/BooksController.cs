@@ -22,7 +22,8 @@ namespace BlueLibrary.Controllers
         // GET: Books
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Book.ToListAsync());
+            var blueLibraryContext = _context.Book.Include(b => b.BookImage).Include(b => b.BookPublisher);
+            return View(await blueLibraryContext.ToListAsync());
         }
 
         // GET: Books/Details/5
@@ -34,6 +35,8 @@ namespace BlueLibrary.Controllers
             }
 
             var book = await _context.Book
+                .Include(b => b.BookImage)
+                .Include(b => b.BookPublisher)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (book == null)
             {
@@ -46,15 +49,17 @@ namespace BlueLibrary.Controllers
         // GET: Books/Create
         public IActionResult Create()
         {
+            ViewData["BookImageId"] = new SelectList(_context.BookImage, "Id", "Id");
+            ViewData["PublisherId"] = new SelectList(_context.Publisher, "Id", "Id");
             return View();
         }
 
         // POST: Books/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BookName,Author,ReleaseDate,Description")] Book book)
+        public async Task<IActionResult> Create([Bind("Id,BookName,Author,ReleaseDate,Description,BookImageId,PublisherId")] Book book)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +67,8 @@ namespace BlueLibrary.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["BookImageId"] = new SelectList(_context.BookImage, "Id", "Id", book.BookImageId);
+            ViewData["PublisherId"] = new SelectList(_context.Publisher, "Id", "Id", book.PublisherId);
             return View(book);
         }
 
@@ -78,15 +85,17 @@ namespace BlueLibrary.Controllers
             {
                 return NotFound();
             }
+            ViewData["BookImageId"] = new SelectList(_context.BookImage, "Id", "Id", book.BookImageId);
+            ViewData["PublisherId"] = new SelectList(_context.Publisher, "Id", "Id", book.PublisherId);
             return View(book);
         }
 
         // POST: Books/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BookName,Author,ReleaseDate,Description")] Book book)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BookName,Author,ReleaseDate,Description,BookImageId,PublisherId")] Book book)
         {
             if (id != book.Id)
             {
@@ -113,6 +122,8 @@ namespace BlueLibrary.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["BookImageId"] = new SelectList(_context.BookImage, "Id", "Id", book.BookImageId);
+            ViewData["PublisherId"] = new SelectList(_context.Publisher, "Id", "Id", book.PublisherId);
             return View(book);
         }
 
@@ -125,6 +136,8 @@ namespace BlueLibrary.Controllers
             }
 
             var book = await _context.Book
+                .Include(b => b.BookImage)
+                .Include(b => b.BookPublisher)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (book == null)
             {
