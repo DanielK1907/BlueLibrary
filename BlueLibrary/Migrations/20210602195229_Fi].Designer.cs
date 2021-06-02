@@ -10,15 +10,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlueLibrary.Migrations
 {
     [DbContext(typeof(BlueLibraryContext))]
-    [Migration("20210601150233_init")]
-    partial class init
+    [Migration("20210602195229_Fi]")]
+    partial class Fi
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("BlueLibrary.Models.Book", b =>
@@ -31,28 +31,27 @@ namespace BlueLibrary.Migrations
                     b.Property<string>("Author")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("BookImage")
+                    b.Property<int>("BookImageId")
                         .HasColumnType("int");
 
                     b.Property<string>("BookName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("BookPublisherId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PublisherId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookImage")
-                        .IsUnique()
-                        .HasFilter("[BookImage] IS NOT NULL");
+                    b.HasIndex("BookImageId")
+                        .IsUnique();
 
-                    b.HasIndex("BookPublisherId");
+                    b.HasIndex("PublisherId");
 
                     b.ToTable("Book");
                 });
@@ -82,12 +81,10 @@ namespace BlueLibrary.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BookId")
-                        .HasColumnType("int");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BookId");
 
                     b.ToTable("Genre");
                 });
@@ -107,22 +104,63 @@ namespace BlueLibrary.Migrations
                     b.ToTable("Publisher");
                 });
 
-            modelBuilder.Entity("BlueLibrary.Models.Book", b =>
+            modelBuilder.Entity("BookGenre", b =>
                 {
-                    b.HasOne("BlueLibrary.Models.BookImage", "Image")
-                        .WithOne("Book")
-                        .HasForeignKey("BlueLibrary.Models.Book", "BookImage");
+                    b.Property<int>("BooksId")
+                        .HasColumnType("int");
 
-                    b.HasOne("BlueLibrary.Models.Publisher", "BookPublisher")
-                        .WithMany("BooksPublisher")
-                        .HasForeignKey("BookPublisherId");
+                    b.Property<int>("GenresId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BooksId", "GenresId");
+
+                    b.HasIndex("GenresId");
+
+                    b.ToTable("BookGenre");
                 });
 
-            modelBuilder.Entity("BlueLibrary.Models.Genre", b =>
+            modelBuilder.Entity("BlueLibrary.Models.Book", b =>
+                {
+                    b.HasOne("BlueLibrary.Models.BookImage", "BookImage")
+                        .WithOne("Book")
+                        .HasForeignKey("BlueLibrary.Models.Book", "BookImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlueLibrary.Models.Publisher", "Publisher")
+                        .WithMany("BooksPublisher")
+                        .HasForeignKey("PublisherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BookImage");
+
+                    b.Navigation("Publisher");
+                });
+
+            modelBuilder.Entity("BookGenre", b =>
                 {
                     b.HasOne("BlueLibrary.Models.Book", null)
-                        .WithMany("Genres")
-                        .HasForeignKey("BookId");
+                        .WithMany()
+                        .HasForeignKey("BooksId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlueLibrary.Models.Genre", null)
+                        .WithMany()
+                        .HasForeignKey("GenresId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BlueLibrary.Models.BookImage", b =>
+                {
+                    b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("BlueLibrary.Models.Publisher", b =>
+                {
+                    b.Navigation("BooksPublisher");
                 });
 #pragma warning restore 612, 618
         }

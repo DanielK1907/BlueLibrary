@@ -104,15 +104,15 @@ namespace BlueLibrary.Migrations
 
             modelBuilder.Entity("BookGenre", b =>
                 {
+                    b.Property<int>("BooksId")
+                        .HasColumnType("int");
+
                     b.Property<int>("GenresId")
                         .HasColumnType("int");
 
-                    b.Property<int>("booksId")
-                        .HasColumnType("int");
+                    b.HasKey("BooksId", "GenresId");
 
-                    b.HasKey("GenresId", "booksId");
-
-                    b.HasIndex("booksId");
+                    b.HasIndex("GenresId");
 
                     b.ToTable("BookGenre");
                 });
@@ -125,7 +125,7 @@ namespace BlueLibrary.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BlueLibrary.Models.Publisher", "BookPublisher")
+                    b.HasOne("BlueLibrary.Models.Publisher", "Publisher")
                         .WithMany("BooksPublisher")
                         .HasForeignKey("PublisherId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -133,20 +133,20 @@ namespace BlueLibrary.Migrations
 
                     b.Navigation("BookImage");
 
-                    b.Navigation("BookPublisher");
+                    b.Navigation("Publisher");
                 });
 
             modelBuilder.Entity("BookGenre", b =>
                 {
-                    b.HasOne("BlueLibrary.Models.Genre", null)
+                    b.HasOne("BlueLibrary.Models.Book", null)
                         .WithMany()
-                        .HasForeignKey("GenresId")
+                        .HasForeignKey("BooksId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BlueLibrary.Models.Book", null)
+                    b.HasOne("BlueLibrary.Models.Genre", null)
                         .WithMany()
-                        .HasForeignKey("booksId")
+                        .HasForeignKey("GenresId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

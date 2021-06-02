@@ -14,14 +14,15 @@ namespace BlueLibrary.Models
         public DateTime ReleaseDate { get; set; }
         public String Description { get; set; }
         
-        [ForeignKey("BookImage")]
+        // 1-1 relationship
         public int BookImageId { get; set; }
         public BookImage BookImage { get; set; }
 
+        // M2M relationship
         public List<Genre> Genres { get; set; }
 
-        [ForeignKey("Publisher")]
+        // 1 to Many relationship
         public int PublisherId { get; set; }
-        public Publisher BookPublisher { get; set; }
+        public Publisher Publisher { get; set; }
     }
 }

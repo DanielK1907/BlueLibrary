@@ -22,7 +22,7 @@ namespace BlueLibrary.Controllers
         // GET: Books
         public async Task<IActionResult> Index()
         {
-            var blueLibraryContext = _context.Book.Include(b => b.BookImage).Include(b => b.BookPublisher);
+            var blueLibraryContext = _context.Book.Include(b => b.BookImage).Include(b => b.Publisher);
             return View(await blueLibraryContext.ToListAsync());
         }
 
@@ -36,7 +36,7 @@ namespace BlueLibrary.Controllers
 
             var book = await _context.Book
                 .Include(b => b.BookImage)
-                .Include(b => b.BookPublisher)
+                .Include(b => b.Publisher)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (book == null)
             {
@@ -137,7 +137,7 @@ namespace BlueLibrary.Controllers
 
             var book = await _context.Book
                 .Include(b => b.BookImage)
-                .Include(b => b.BookPublisher)
+                .Include(b => b.Publisher)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (book == null)
             {
