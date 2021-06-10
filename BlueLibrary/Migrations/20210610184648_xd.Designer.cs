@@ -4,14 +4,16 @@ using BlueLibrary.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BlueLibrary.Migrations
 {
     [DbContext(typeof(BlueLibraryContext))]
-    partial class BlueLibraryContextModelSnapshot : ModelSnapshot
+    [Migration("20210610184648_xd")]
+    partial class xd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,14 +31,14 @@ namespace BlueLibrary.Migrations
                     b.Property<string>("Author")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("BookImageId")
+                        .HasColumnType("int");
+
                     b.Property<string>("BookName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ImageId")
-                        .HasColumnType("int");
 
                     b.Property<int>("PublisherId")
                         .HasColumnType("int");
@@ -46,7 +48,7 @@ namespace BlueLibrary.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ImageId")
+                    b.HasIndex("BookImageId")
                         .IsUnique();
 
                     b.HasIndex("PublisherId");
@@ -119,21 +121,21 @@ namespace BlueLibrary.Migrations
 
             modelBuilder.Entity("BlueLibrary.Models.Book", b =>
                 {
-                    b.HasOne("BlueLibrary.Models.BookImage", "Image")
+                    b.HasOne("BlueLibrary.Models.BookImage", "BookImage")
                         .WithOne("Book")
-                        .HasForeignKey("BlueLibrary.Models.Book", "ImageId")
+                        .HasForeignKey("BlueLibrary.Models.Book", "BookImageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BlueLibrary.Models.Publisher", "Publisher")
+                    b.HasOne("BlueLibrary.Models.Publisher", "BookPublisher")
                         .WithMany("BooksPublisher")
                         .HasForeignKey("PublisherId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Image");
+                    b.Navigation("BookImage");
 
-                    b.Navigation("Publisher");
+                    b.Navigation("BookPublisher");
                 });
 
             modelBuilder.Entity("BookGenre", b =>
