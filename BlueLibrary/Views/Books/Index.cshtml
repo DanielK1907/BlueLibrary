@@ -25,7 +25,7 @@
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Image)
+                @Html.DisplayNameFor(model => model.Image.ImageURL)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Publisher)
@@ -49,7 +49,7 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Image.Id)
+                @Html.DisplayFor(modelItem => item.Image.ImageURL)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Publisher.Id)

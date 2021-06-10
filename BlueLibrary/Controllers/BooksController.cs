@@ -49,7 +49,7 @@ namespace BlueLibrary.Controllers
         // GET: Books/Create
         public IActionResult Create()
         {
-            ViewData["ImageId"] = new SelectList(_context.BookImage, "Id", "Id");
+            ViewData["ImageId"] = new SelectList(_context.BookImage, "Id", "ImageURL");
             ViewData["PublisherId"] = new SelectList(_context.Publisher, "Id", "Id");
             return View();
         }
