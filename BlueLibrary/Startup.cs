@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using BlueLibrary.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace BlueLibrary
 {
@@ -29,6 +30,11 @@ namespace BlueLibrary
 
             services.AddDbContext<BlueLibraryContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("BlueLibraryContext")));
+
+            services.AddSession(options => { options.IdleTimeout = TimeSpan.FromMinutes(10); });
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => { options.LoginPath = "/Users/Login"; options.AccessDeniedPath = "/Users/AccessDenied"; });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,13 +55,16 @@ namespace BlueLibrary
 
             app.UseRouting();
 
+            app.UseSession();
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Users}/{action=Login}/{id?}");
             });
         }
     }
