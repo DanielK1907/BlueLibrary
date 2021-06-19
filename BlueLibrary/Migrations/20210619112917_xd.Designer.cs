@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlueLibrary.Migrations
 {
     [DbContext(typeof(BlueLibraryContext))]
-    [Migration("20210610191022_xd1")]
-    partial class xd1
+    [Migration("20210619112917_xd")]
+    partial class xd
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -104,17 +104,40 @@ namespace BlueLibrary.Migrations
                     b.ToTable("Publisher");
                 });
 
+            modelBuilder.Entity("BlueLibrary.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("User");
+                });
+
             modelBuilder.Entity("BookGenre", b =>
                 {
+                    b.Property<int>("BooksId")
+                        .HasColumnType("int");
+
                     b.Property<int>("GenresId")
                         .HasColumnType("int");
 
-                    b.Property<int>("booksId")
-                        .HasColumnType("int");
+                    b.HasKey("BooksId", "GenresId");
 
-                    b.HasKey("GenresId", "booksId");
-
-                    b.HasIndex("booksId");
+                    b.HasIndex("GenresId");
 
                     b.ToTable("BookGenre");
                 });
@@ -140,15 +163,15 @@ namespace BlueLibrary.Migrations
 
             modelBuilder.Entity("BookGenre", b =>
                 {
-                    b.HasOne("BlueLibrary.Models.Genre", null)
+                    b.HasOne("BlueLibrary.Models.Book", null)
                         .WithMany()
-                        .HasForeignKey("GenresId")
+                        .HasForeignKey("BooksId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BlueLibrary.Models.Book", null)
+                    b.HasOne("BlueLibrary.Models.Genre", null)
                         .WithMany()
-                        .HasForeignKey("booksId")
+                        .HasForeignKey("GenresId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

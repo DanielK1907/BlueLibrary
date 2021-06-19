@@ -21,5 +21,7 @@ namespace BlueLibrary.Data
         public DbSet<BlueLibrary.Models.BookImage> BookImage { get; set; }
 
         public DbSet<BlueLibrary.Models.Genre> Genre { get; set; }
+
+        public DbSet<BlueLibrary.Models.User> User { get; set; }
     }
 }
