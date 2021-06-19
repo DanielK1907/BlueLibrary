@@ -86,3 +86,14 @@ body {
 .primary-color {
    background-color: #00bcd4 !important;
 }
+
+.nav-btn {
+    font-size: x-large
+}
+
+.absolute-center {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    position: absolute;
+}

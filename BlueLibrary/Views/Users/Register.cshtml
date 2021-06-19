@@ -5,10 +5,16 @@
     Layout = "_LoginLayout";
 }
 
-
-<h1>Register a New User</h1>
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light box-shadow mb-3 flex-row">
+    <div class="flx2">
+        <a class="navbar-brand"><img src="~/images/BlueLibraryLogo.png" /></a>
+    </div>
+    <div class="absolute-center">
+        <h1>Register a New User</h1>
+    </div>
+</nav>
 <hr />
-<div class="row">
+<div class="row justify-content-md-center">
     <div class="col-md-4">
         <form asp-action="Register">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -30,11 +36,10 @@
         {
             <div class="text-danger">@ViewBag.Error</div>
         }
+        <div>
+            Already registered? <a asp-action="Login">Click here</a> to login
+        </div>
     </div>
-</div>
-
-<div>
-    Already registered? <a asp-action="Login">Click here</a> to login
 </div>
 
 @section Scripts {
