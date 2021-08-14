@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BlueLibrary.Data;
 using BlueLibrary.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlueLibrary.Controllers
 {
+    [Authorize]
     public class BooksController : Controller
     {
         private readonly BlueLibraryContext _context;
@@ -47,6 +49,7 @@ namespace BlueLibrary.Controllers
         }
 
         // GET: Books/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             ViewData["ImageId"] = new SelectList(_context.BookImage, "Id", "ImageURL");
@@ -59,6 +62,7 @@ namespace BlueLibrary.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("Id,BookName,Author,ReleaseDate,Description,ImageId,PublisherId")] Book book)
         {
             if (ModelState.IsValid)
@@ -73,6 +77,7 @@ namespace BlueLibrary.Controllers
         }
 
         // GET: Books/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -95,6 +100,7 @@ namespace BlueLibrary.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,BookName,Author,ReleaseDate,Description,ImageId,PublisherId")] Book book)
         {
             if (id != book.Id)
@@ -128,6 +134,7 @@ namespace BlueLibrary.Controllers
         }
 
         // GET: Books/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -150,6 +157,7 @@ namespace BlueLibrary.Controllers
         // POST: Books/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var book = await _context.Book.FindAsync(id);

@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BlueLibrary.Data;
 using BlueLibrary.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlueLibrary.Controllers
 {
+    [Authorize]
     public class GenresController : Controller
     {
         private readonly BlueLibraryContext _context;
