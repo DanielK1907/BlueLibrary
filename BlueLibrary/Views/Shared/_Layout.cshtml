@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - BlueLibrary</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/map.css" />
 </head>
 <body>
     <header>
@@ -20,6 +21,9 @@
                     <ul class="navbar-nav flex-grow-1 justify-content-around">
                         <li class="nav-item">
                             <a class="nav-link text-dark nav-btn" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark nav-btn" asp-area="" asp-controller="Home" asp-action="Location">Find us</a>
                         </li>
                         @if (Context.User != null && Context.User.Claims != null && Context.User.Claims.Count() > 0 && Context.User.IsInRole("Admin"))
                         {
