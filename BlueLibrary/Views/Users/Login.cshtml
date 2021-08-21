@@ -1,0 +1,43 @@
+﻿@model BlueLibrary.Models.User
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "_LoginLayout";
+}
+
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light box-shadow mb-3 flex-row">
+    <a class="navbar-brand"><img src="~/images/BlueLibraryLogo.png" /></a>
+    <h1 class="absolute-center">Log In!</h1>
+</nav>
+<hr />
+<div class="row justify-content-md-center">
+    <div class="col-md-4">
+        <form asp-action="Login">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Username" class="control-label"></label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Log In" class="btn btn-primary" />
+            </div>
+        </form>
+        @if (ViewBag.Error != null)
+        {
+            <div class="text-danger">@ViewBag.Error</div>
+        }
+        <div>
+            Not registered? <a asp-action="Register">Click here</a> to register!
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

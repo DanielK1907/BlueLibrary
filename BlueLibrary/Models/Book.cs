@@ -15,13 +15,13 @@ namespace BlueLibrary.Models
         public String Description { get; set; }
         
         [ForeignKey("BookImage")]
-        public int BookImageId { get; set; }
-        public BookImage BookImage { get; set; }
+        public int ImageId { get; set; }
+        public BookImage Image { get; set; }
 
         public List<Genre> Genres { get; set; }
 
         [ForeignKey("Publisher")]
         public int PublisherId { get; set; }
-        public Publisher BookPublisher { get; set; }
+        public Publisher Publisher { get; set; }
     }
 }

@@ -1,0 +1,13 @@
+﻿@model BlueLibrary.Models.User
+
+@{
+    ViewData["Title"] = "AccessDenied";
+    Layout = "_LoginLayout";
+}
+
+<div class="justify-content-md-center">
+    <h1>You are not authorized to access this page.</h1>
+    <div>
+        <a asp-action="Logout">Click here</a> to sign in using a different user
+    </div>
+</div>

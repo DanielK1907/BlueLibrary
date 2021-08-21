@@ -6,9 +6,11 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<form>
+    <button class="btn-primary" asp-action="Create">
+        Create New
+    </button>
+</form>
 <table class="table">
     <thead>
         <tr>
@@ -25,10 +27,10 @@
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BookImage)
+                @Html.DisplayNameFor(model => model.Image.ImageURL)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BookPublisher)
+                @Html.DisplayNameFor(model => model.Publisher)
             </th>
             <th></th>
         </tr>
@@ -49,10 +51,10 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BookImage.Id)
+                @Html.DisplayFor(modelItem => item.Image.ImageURL)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BookPublisher.Id)
+                @Html.DisplayFor(modelItem => item.Publisher.Id)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

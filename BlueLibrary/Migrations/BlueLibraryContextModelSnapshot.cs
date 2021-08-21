@@ -29,14 +29,14 @@ namespace BlueLibrary.Migrations
                     b.Property<string>("Author")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("BookImageId")
-                        .HasColumnType("int");
-
                     b.Property<string>("BookName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ImageId")
+                        .HasColumnType("int");
 
                     b.Property<int>("PublisherId")
                         .HasColumnType("int");
@@ -46,7 +46,7 @@ namespace BlueLibrary.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookImageId")
+                    b.HasIndex("ImageId")
                         .IsUnique();
 
                     b.HasIndex("PublisherId");
@@ -102,51 +102,74 @@ namespace BlueLibrary.Migrations
                     b.ToTable("Publisher");
                 });
 
+            modelBuilder.Entity("BlueLibrary.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("User");
+                });
+
             modelBuilder.Entity("BookGenre", b =>
                 {
+                    b.Property<int>("BooksId")
+                        .HasColumnType("int");
+
                     b.Property<int>("GenresId")
                         .HasColumnType("int");
 
-                    b.Property<int>("booksId")
-                        .HasColumnType("int");
+                    b.HasKey("BooksId", "GenresId");
 
-                    b.HasKey("GenresId", "booksId");
-
-                    b.HasIndex("booksId");
+                    b.HasIndex("GenresId");
 
                     b.ToTable("BookGenre");
                 });
 
             modelBuilder.Entity("BlueLibrary.Models.Book", b =>
                 {
-                    b.HasOne("BlueLibrary.Models.BookImage", "BookImage")
+                    b.HasOne("BlueLibrary.Models.BookImage", "Image")
                         .WithOne("Book")
-                        .HasForeignKey("BlueLibrary.Models.Book", "BookImageId")
+                        .HasForeignKey("BlueLibrary.Models.Book", "ImageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BlueLibrary.Models.Publisher", "BookPublisher")
+                    b.HasOne("BlueLibrary.Models.Publisher", "Publisher")
                         .WithMany("BooksPublisher")
                         .HasForeignKey("PublisherId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("BookImage");
+                    b.Navigation("Image");
 
-                    b.Navigation("BookPublisher");
+                    b.Navigation("Publisher");
                 });
 
             modelBuilder.Entity("BookGenre", b =>
                 {
-                    b.HasOne("BlueLibrary.Models.Genre", null)
+                    b.HasOne("BlueLibrary.Models.Book", null)
                         .WithMany()
-                        .HasForeignKey("GenresId")
+                        .HasForeignKey("BooksId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BlueLibrary.Models.Book", null)
+                    b.HasOne("BlueLibrary.Models.Genre", null)
                         .WithMany()
-                        .HasForeignKey("booksId")
+                        .HasForeignKey("GenresId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

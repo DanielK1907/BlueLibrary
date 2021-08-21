@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BlueLibrary.Data;
 using BlueLibrary.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlueLibrary.Controllers
 {
+    [Authorize]
     public class BooksController : Controller
     {
         private readonly BlueLibraryContext _context;
@@ -22,7 +24,7 @@ namespace BlueLibrary.Controllers
         // GET: Books
         public async Task<IActionResult> Index()
         {
-            var blueLibraryContext = _context.Book.Include(b => b.BookImage).Include(b => b.BookPublisher);
+            var blueLibraryContext = _context.Book.Include(b => b.Image).Include(b => b.Publisher);
             return View(await blueLibraryContext.ToListAsync());
         }
 
@@ -35,8 +37,8 @@ namespace BlueLibrary.Controllers
             }
 
             var book = await _context.Book
-                .Include(b => b.BookImage)
-                .Include(b => b.BookPublisher)
+                .Include(b => b.Image)
+                .Include(b => b.Publisher)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (book == null)
             {
@@ -47,10 +49,11 @@ namespace BlueLibrary.Controllers
         }
 
         // GET: Books/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
-            ViewData["BookImageId"] = new SelectList(_context.BookImage, "Id", "Id");
-            ViewData["PublisherId"] = new SelectList(_context.Publisher, "Id", "Id");
+            ViewData["ImageId"] = new SelectList(_context.BookImage, "Id", "ImageURL");
+            ViewData["PublisherId"] = new SelectList(_context.Publisher, "Id", "Name");
             return View();
         }
 
@@ -59,7 +62,8 @@ namespace BlueLibrary.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BookName,Author,ReleaseDate,Description,BookImageId,PublisherId")] Book book)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Create([Bind("Id,BookName,Author,ReleaseDate,Description,ImageId,PublisherId")] Book book)
         {
             if (ModelState.IsValid)
             {
@@ -67,12 +71,13 @@ namespace BlueLibrary.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BookImageId"] = new SelectList(_context.BookImage, "Id", "Id", book.BookImageId);
+            ViewData["ImageId"] = new SelectList(_context.BookImage, "Id", "Id", book.ImageId);
             ViewData["PublisherId"] = new SelectList(_context.Publisher, "Id", "Id", book.PublisherId);
             return View(book);
         }
 
         // GET: Books/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -85,7 +90,7 @@ namespace BlueLibrary.Controllers
             {
                 return NotFound();
             }
-            ViewData["BookImageId"] = new SelectList(_context.BookImage, "Id", "Id", book.BookImageId);
+            ViewData["ImageId"] = new SelectList(_context.BookImage, "Id", "Id", book.ImageId);
             ViewData["PublisherId"] = new SelectList(_context.Publisher, "Id", "Id", book.PublisherId);
             return View(book);
         }
@@ -95,7 +100,8 @@ namespace BlueLibrary.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BookName,Author,ReleaseDate,Description,BookImageId,PublisherId")] Book book)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BookName,Author,ReleaseDate,Description,ImageId,PublisherId")] Book book)
         {
             if (id != book.Id)
             {
@@ -122,12 +128,13 @@ namespace BlueLibrary.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BookImageId"] = new SelectList(_context.BookImage, "Id", "Id", book.BookImageId);
+            ViewData["ImageId"] = new SelectList(_context.BookImage, "Id", "Id", book.ImageId);
             ViewData["PublisherId"] = new SelectList(_context.Publisher, "Id", "Id", book.PublisherId);
             return View(book);
         }
 
         // GET: Books/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -136,8 +143,8 @@ namespace BlueLibrary.Controllers
             }
 
             var book = await _context.Book
-                .Include(b => b.BookImage)
-                .Include(b => b.BookPublisher)
+                .Include(b => b.Image)
+                .Include(b => b.Publisher)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (book == null)
             {
@@ -150,6 +157,7 @@ namespace BlueLibrary.Controllers
         // POST: Books/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var book = await _context.Book.FindAsync(id);

@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BlueLibrary.Data;
 using BlueLibrary.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlueLibrary.Controllers
 {
+    [Authorize]
     public class BookImagesController : Controller
     {
         private readonly BlueLibraryContext _context;
@@ -44,6 +46,7 @@ namespace BlueLibrary.Controllers
         }
 
         // GET: BookImages/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -54,6 +57,7 @@ namespace BlueLibrary.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("Id,ImageURL,ImageDescription")] BookImage bookImage)
         {
             if (ModelState.IsValid)
@@ -66,6 +70,7 @@ namespace BlueLibrary.Controllers
         }
 
         // GET: BookImages/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -86,6 +91,7 @@ namespace BlueLibrary.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,ImageURL,ImageDescription")] BookImage bookImage)
         {
             if (id != bookImage.Id)
@@ -117,6 +123,7 @@ namespace BlueLibrary.Controllers
         }
 
         // GET: BookImages/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -137,6 +144,7 @@ namespace BlueLibrary.Controllers
         // POST: BookImages/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var bookImage = await _context.BookImage.FindAsync(id);
