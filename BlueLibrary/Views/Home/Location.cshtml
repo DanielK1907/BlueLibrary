@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Location";
+}
+<h1 class="locationTitle">See our store in map</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-12 map">
+        <div class="myMap" id="myMap"></div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        function loadMapScenario() {
+            var map = new Microsoft.Maps.Map('#myMap', {
+                credentials: 'ApDDnnOtsh8YyRnlGb0TzW2VYvZnGzxVF7es5LUFydQw4KAomu5_cQhYvlwugfPG',
+                mapTypeId: Microsoft.Maps.MapTypeId.road,
+                zoom: 10
+            });
+
+            function addMarker(latitude, lontitude) {
+
+                //Create custom Pushpin
+                var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(latitude, lontitude), {
+                    title: 'Blue Library Store',
+                    subTitle: 'Opened Between: 08:00-17:00',
+                    text: ''
+                });
+
+                //Add the pushpin to the map
+                map.entities.push(pin);
+            }
+            addMarker(31.980380, 34.747563);
+        }
+    </script>
+    <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?branch=release&callback=loadMapScenario' async defer></script>
+}
