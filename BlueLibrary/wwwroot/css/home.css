@@ -1,0 +1,11 @@
+﻿#view-books-button {
+    height: fit-content;
+    background: teal;
+    color: palegoldenrod;
+    width: auto;
+}
+
+.card {
+    display: inline-block;
+    align-items: stretch;
+}

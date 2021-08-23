@@ -1,0 +1,35 @@
+﻿@model IEnumerable<BlueLibrary.Models.Book>
+
+@{
+    ViewData["Title"] = "Watch Books";
+}
+
+<form asp-action="Search">
+    <input name="title" placeholder="Search by book title" />
+    <input name="author" placeholder="Search by author" />
+    <br />
+    <input type="submit" value="Search" class="btn btn-primary" />
+</form>
+
+<h1>Here are the books:</h1>
+<div class="container-fluid content-row">
+    @foreach (var book in Model)
+    {
+        <div class="card" style="width: 18rem;">
+            @if (book.Image != null)
+            {
+                <img class="card-img-top" src="~/images/@book.Image.ImageURL" alt="Card image cap">
+            }
+            <h5 class="card-title">@book.BookName</h5>
+            Author: <i>@book.Author</i>
+            <div class="card-body">
+                <p class="card-text">@book.Description</p>
+            </div>
+        </div>
+    }
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

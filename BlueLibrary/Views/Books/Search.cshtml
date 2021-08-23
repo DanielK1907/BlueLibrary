@@ -1,41 +1,10 @@
 ﻿@model IEnumerable<BlueLibrary.Models.Book>
 
 @{
-    ViewData["Title"] = "Index";
+    var books = Model.ToList();
+
 }
 
-<h1>Our Books</h1>
-
-<form>
-    <button class="btn-primary" asp-action="Create">
-        Create New
-    </button>
-</form>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.BookName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Author)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReleaseDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Image.ImageURL)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Publisher.Name)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
 @foreach (var item in Model) {
         <tr>
             <td>
