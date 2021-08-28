@@ -13,22 +13,24 @@
 </form>
 
 <h1>Here are the books:</h1>
-<div class="container-fluid content-row">
+<div class="container-fluid content-row card-container">
     @foreach (var book in Model)
     {
-    <div class="card" style="width: 18rem;">
-        @if (book.Image != null)
-        {
-            <img class="card-img-top" src="~/images/@book.Image.ImageURL" alt="Card image cap">
-        }
-        else
-        {
-            <img class="card-img-top" src="~/images/default.jpg" alt="Card image cap">
-        }
-        <h5 class="card-title">@book.BookName</h5>
-        Author: <i>@book.Author</i>
-        <div class="card-body">
-            <p class="card-text">@book.Description</p>
+    <div style="padding-bottom: 30px">
+        <div class="card" style="width: 18rem">
+            @if (book.Image != null)
+            {
+                <img class="card-img-top" height="300" src="~/images/@book.Image.ImageURL" alt="Card image cap">
+            }
+            else
+            {
+                <img class="card-img-top" height="300" src="~/images/default.jpg" alt="Card image cap">
+            }
+            <h4 class="card-title"><b>@book.BookName</b></h4>
+            <p>Author: @book.Author</p>
+            <div class="card-body">
+                <p class="card-text" title="@book.Description">@book.Description</p>
+            </div>
         </div>
     </div>
     }
