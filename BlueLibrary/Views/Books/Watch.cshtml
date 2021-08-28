@@ -4,41 +4,60 @@
     ViewData["Title"] = "Watch Books";
 }
 
+<h2>Search here</h2>
+<br />
 <form>
-    <input name="title" placeholder="Search by book title" />
-    <input name="author" placeholder="Search by author" />
-    <input name="publisherName" placeholder="Search by publisher" />
+    <div class="search-inputs">
+        <div class="tb">
+            <div class="td">
+                <input type="text" name="title" placeholder="Book title">
+            </div>
+        </div>
+
+        <div class="tb">
+            <div class="td">
+                <input type="text" name="author" placeholder="Book author">
+            </div>
+        </div>
+        <div class="tb">
+            <div class="td">
+                <input type="text" name="publisherName" placeholder="Book publisher">
+            </div>
+        </div>
+    </div>
     <br />
     <input type="submit" value="Search" asp-action="Search" class="btn btn-primary" />
     <input type="submit" value="View All" asp-action="Clear" class="btn btn-primary" />
 </form>
 
-    <h1>Our books:</h1>
-    <div class="container-fluid content-row card-container">
-        @foreach (var book in Model)
-        {
-            <div style="padding-bottom: 30px; padding-right:15px">
-                <div class="card" style="width: 18rem">
-                    @if (book.Image != null)
-                    {
-                        <img class="card-img-top" height="300" src="~/images/@book.Image.ImageURL" alt="Card image cap">
-                    }
-                    else
-                    {
-                        <img class="card-img-top" height="300" src="~/images/default.jpg" alt="Card image cap">
-                    }
-                    <h4 class="card-title"><b>@book.BookName</b></h4>
-                    <p><i>Author: @book.Author </i><br />
-                       <b>Publisher: @book.Publisher.Name</b></p>
-                    <div class="card-body">
-                        <p class="card-text" title="@book.Description">@book.Description</p>
-                    </div>
+<h1>Our books:</h1>
+<div class="container-fluid content-row card-container">
+    @foreach (var book in Model)
+    {
+        <div style="padding-bottom: 30px; padding-right:15px">
+            <div class="card" style="width: 18rem">
+                @if (book.Image != null)
+                {
+                    <img class="card-img-top" height="300" src="~/images/@book.Image.ImageURL" alt="Card image cap">
+                }
+                else
+                {
+                    <img class="card-img-top" height="300" src="~/images/default.jpg" alt="Card image cap">
+                }
+                <h4 class="card-title"><b>@book.BookName</b></h4>
+                <p>
+                    <i>Author: @book.Author </i><br />
+                    <b>Publisher: @book.Publisher.Name</b>
+                </p>
+                <div class="card-body">
+                    <p class="card-text" title="@book.Description">@book.Description</p>
                 </div>
             </div>
-        }
-    </div>
-
-
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        </div>
     }
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
