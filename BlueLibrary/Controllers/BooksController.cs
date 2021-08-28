@@ -124,7 +124,8 @@ namespace BlueLibrary.Controllers
             {
                 return NotFound();
             }
-            ViewData["ImageId"] = new SelectList(blueLibraryConext.BookImage, "Id", "ImageURL", book.ImageId);
+            ViewData["ImageId"] = new SelectList(
+                blueLibraryConext.BookImage.Include(b => b.Book).Where(b => b.Book == null || b.Book.Id == id), "Id", "ImageURL", book.ImageId);
             ViewData["PublisherId"] = new SelectList(blueLibraryConext.Publisher, "Id", "Name", book.PublisherId);
             return View(book);
         }
