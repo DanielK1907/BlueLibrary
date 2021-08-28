@@ -3,10 +3,17 @@
     background: teal;
     color: palegoldenrod;
     width: auto;
+    border-radius: 100px;
 }
 
 #genre-search {
     width: fit-content;
+}
+
+h1 {
+    color: white;
+    text-shadow: 2px 2px 4px #000000;
+    transition-property: text-shadow;
 }
 
 .card {
@@ -66,4 +73,13 @@ input {
     border: 0px;
     border-color: ActiveBorder;
     background-color: #d0d8d8;
+}
+
+#best-library {
+    font-style: italic; 
+}
+
+#best-library:hover {
+    color: pink;
+    transition-duration: 500ms;
 }
