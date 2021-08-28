@@ -29,6 +29,7 @@
     <input type="submit" value="Search" asp-action="Search" class="btn btn-primary" />
     <input type="submit" value="View All" asp-action="Clear" class="btn btn-primary" />
 </form>
+
 <h1>Our books:</h1>
 <div class="container-fluid content-row card-container">
     @foreach (var book in Model)
@@ -44,7 +45,10 @@
                     <img class="card-img-top" height="300" src="~/images/default.jpg" alt="Card image cap">
                 }
                 <h4 class="card-title"><b>@book.BookName</b></h4>
-                <p>Author: @book.Author</p>
+                <p>
+                    <i>Author: @book.Author </i><br />
+                    <b>Publisher: @book.Publisher.Name</b>
+                </p>
                 <div class="card-body">
                     <p class="card-text" title="@book.Description">@book.Description</p>
                 </div>
