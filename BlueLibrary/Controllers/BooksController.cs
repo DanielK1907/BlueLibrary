@@ -91,6 +91,7 @@ namespace BlueLibrary.Controllers
             ViewData["ImageId"] = new SelectList(
                 blueLibraryConext.BookImage.Include(b => b.Book).Where(b => b.Book == null), "Id", "ImageURL");
             ViewData["PublisherId"] = new SelectList(blueLibraryConext.Publisher, "Id", "Name");
+            ViewData["GenresIds"] = new MultiSelectList(blueLibraryConext.Genre, "Id", "Name");
             return View();
         }
 
@@ -100,10 +101,15 @@ namespace BlueLibrary.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([Bind("Id,BookName,Author,ReleaseDate,Description,ImageId,PublisherId")] Book book)
+        public async Task<IActionResult> Create([Bind("Id,BookName,Author,ReleaseDate,Description,ImageId,PublisherId")] Book book, int[] genresIds)
         {
             if (ModelState.IsValid)
             {
+                book.Genres = new List<Genre>();
+                foreach (var genreId in genresIds)
+                {
+                    book.Genres.Add(blueLibraryConext.Genre.FirstOrDefault(g => g.Id == genreId));
+                }
                 blueLibraryConext.Add(book);
                 await blueLibraryConext.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

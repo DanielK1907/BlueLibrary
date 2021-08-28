@@ -54,6 +54,12 @@
                     <i>Author: @book.Author </i><br />
                     <i>Publisher: @book.Publisher.Name</i>
                 </p>
+                <p>
+                    Genres: @foreach (var genre in book.Genres)
+                    {
+                        <span>@genre.Name </span>
+                    }
+                </p>
                 <div class="card-body">
                     <p class="card-text" title="@book.Description">@book.Description</p>
                 </div>
