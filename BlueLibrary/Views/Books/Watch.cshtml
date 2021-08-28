@@ -16,17 +16,21 @@
 <div class="container-fluid content-row">
     @foreach (var book in Model)
     {
-        <div class="card" style="width: 18rem;">
-            @if (book.Image != null)
-            {
-                <img class="card-img-top" src="~/images/@book.Image.ImageURL" alt="Card image cap">
-            }
-            <h5 class="card-title">@book.BookName</h5>
-            Author: <i>@book.Author</i>
-            <div class="card-body">
-                <p class="card-text">@book.Description</p>
-            </div>
+    <div class="card" style="width: 18rem;">
+        @if (book.Image != null)
+        {
+            <img class="card-img-top" src="~/images/@book.Image.ImageURL" alt="Card image cap">
+        }
+        else
+        {
+            <img class="card-img-top" src="~/images/default.jpg" alt="Card image cap">
+        }
+        <h5 class="card-title">@book.BookName</h5>
+        Author: <i>@book.Author</i>
+        <div class="card-body">
+            <p class="card-text">@book.Description</p>
         </div>
+    </div>
     }
 </div>
 

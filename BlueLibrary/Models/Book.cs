@@ -25,8 +25,9 @@ namespace BlueLibrary.Models
         public String Description { get; set; }
         
         [ForeignKey("BookImage")]
-        public int ImageId { get; set; }
-        public BookImage Image { get; set; }
+        public int? ImageId { get; set; }
+        
+        public BookImage? Image { get; set; }
 
         public List<Genre> Genres { get; set; }
 
