@@ -37,3 +37,30 @@
     overflow: hidden;
     width: 200px;
 }
+
+.search-inputs {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    width: 600px;
+}
+
+.tb {
+    display: table;
+    width: 100%;
+}
+
+.td {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+input {
+    color: #fff;
+    font-family: Nunito;
+    padding: 0;
+    margin: 0;
+    border: 1px;
+    border-color:ActiveBorder;
+    background-color: transparent;
+}
