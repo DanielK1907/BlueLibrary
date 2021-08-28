@@ -77,7 +77,8 @@ namespace BlueLibrary.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
-            ViewData["ImageId"] = new SelectList(blueLibraryConext.BookImage, "Id", "ImageURL");
+            ViewData["ImageId"] = new SelectList(
+                blueLibraryConext.BookImage.Include(b => b.Book).Where(b => b.Book == null), "Id", "ImageURL");
             ViewData["PublisherId"] = new SelectList(blueLibraryConext.Publisher, "Id", "Name");
             return View();
         }
