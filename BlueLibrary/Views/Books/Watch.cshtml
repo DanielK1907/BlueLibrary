@@ -24,6 +24,11 @@
                 <input type="text" name="publisherName" placeholder="Publisher">
             </div>
         </div>
+        <div class="tb">
+            <div class="td">
+                <select class="form-control" asp-items="ViewBag.Genres"></select>
+            </div>
+        </div>
     </div>
     <br />
     <input type="submit" value="Search" asp-action="Search" class="btn btn-primary" />

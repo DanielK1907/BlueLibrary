@@ -29,10 +29,12 @@ namespace BlueLibrary.Controllers
                 .Include(b => b.Publisher)
                 .Include(b => b.Genres);
 
+            ViewData["Genres"] = new SelectList(blueLibraryConext.Genre, "Id", "Name");
+
             return View(await allBooks.ToListAsync());
         }
 
-        public async Task<IActionResult> Search(string title, string author, string publisherName)
+        public async Task<IActionResult> Search(string title, string author, string publisherName, int genreId)
         {
             var searchContext= blueLibraryConext.Book
                 .Include(b => b.Image)
