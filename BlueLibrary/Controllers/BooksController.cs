@@ -32,7 +32,7 @@ namespace BlueLibrary.Controllers
             return View(await allBooks.ToListAsync());
         }
 
-        public async Task<IActionResult> Search(string title, string author)
+        public async Task<IActionResult> Search(string title, string author, string publisherName)
         {
             var searchContext= blueLibraryConext.Book
                 .Include(b => b.Image)
@@ -40,6 +40,7 @@ namespace BlueLibrary.Controllers
                 .Include(b => b.Genres)
                 .Where(b => 
             (title == null || b.BookName.ToLower().Contains(title.Trim().ToLower())) &&
+            (publisherName == null || (b.Publisher != null && b.Publisher.Name.ToLower().Contains(publisherName.Trim().ToLower()))) &&
             (author == null || b.Author.ToLower().Contains(author.Trim().ToLower())));
 
             return View("Watch", await searchContext.ToListAsync());
