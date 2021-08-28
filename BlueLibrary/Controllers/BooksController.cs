@@ -45,6 +45,15 @@ namespace BlueLibrary.Controllers
 
             return View("Watch", await searchContext.ToListAsync());
         }
+        public async Task<IActionResult> Clear()
+        {
+            var searchContext= blueLibraryConext.Book
+                .Include(b => b.Image)
+                .Include(b => b.Publisher)
+                .Include(b => b.Genres);
+
+            return View("Watch", await searchContext.ToListAsync());
+        }
 
         // GET: Books
         public async Task<IActionResult> Index()
