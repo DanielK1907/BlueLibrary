@@ -28,11 +28,11 @@
                         </li>
                         @if (Context.User != null && Context.User.Claims != null && Context.User.Claims.Count() > 0 && Context.User.IsInRole("Admin"))
                         {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-dark nav-btn" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <li class="nav-item dropdown nav-item-manager">
+                                <a class="nav-link dropdown-toggle nav-item-manager text-dark nav-btn" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" asp-area="">
                                     Manager
                                 </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <div class="dropdown-menu nav-item-manager" aria-labelledby="navbarDropdown">
                                     <a asp-controller="Books" asp-action="Index" class="nav-link text-dark nav-btn">Manage Books</a>
                                     <a asp-controller="Genres" asp-action="Index" class="nav-link text-dark nav-btn">Manage Genres</a>
                                     <a asp-controller="Publishers" asp-action="Index" class="nav-link text-dark nav-btn">Manage Publishers</a>
