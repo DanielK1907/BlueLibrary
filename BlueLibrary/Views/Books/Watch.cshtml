@@ -29,6 +29,11 @@
                     }
                     <h4 class="card-title"><b>@book.BookName</b></h4>
                     <p>Author: @book.Author</p>
+                    <p>Genres: @foreach (var genre in book.Genres)
+                    {
+                        <span>@genre.Name </span>
+                    }
+                    </p>
                     <div class="card-body">
                         <p class="card-text" title="@book.Description">@book.Description</p>
                     </div>
