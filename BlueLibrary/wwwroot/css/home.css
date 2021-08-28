@@ -5,6 +5,10 @@
     width: auto;
 }
 
+#genre-search {
+    width: fit-content;
+}
+
 .card {
     display: inline-block;
     align-items: stretch;
