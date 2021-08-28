@@ -34,7 +34,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="ImageId" class="control-label">Image URL: </label>
-                <select asp-for="ImageId" class ="form-control" asp-items="ViewBag.ImageId"></select>
+                <select asp-for="ImageId" class="form-control" asp-items="ViewBag.ImageId">
+                    <option disabled selected></option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="PublisherId" class="control-label">Publisher Name: </label>
