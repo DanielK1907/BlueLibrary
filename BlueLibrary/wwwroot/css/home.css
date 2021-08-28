@@ -58,8 +58,8 @@
 input {
     color: #fff;
     font-family: Nunito;
-    border-radius:5px;
+    border-radius: 5px;
     border: 0px;
-    border-color:ActiveBorder;
-    background-color: transparent;
+    border-color: ActiveBorder;
+    background-color: #d0d8d8;
 }
