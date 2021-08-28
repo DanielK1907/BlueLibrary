@@ -14,17 +14,51 @@ namespace BlueLibrary.Controllers
     [Authorize]
     public class BooksController : Controller
     {
-        private readonly BlueLibraryContext _context;
+        private readonly BlueLibraryContext blueLibraryConext;
 
         public BooksController(BlueLibraryContext context)
         {
-            _context = context;
+            blueLibraryConext = context;
+        }
+
+        // GET: Books/Watch
+        public async Task<IActionResult> Watch()
+        {
+            IQueryable<Book> allBooks = blueLibraryConext.Book
+                .Include(b => b.Image)
+                .Include(b => b.Publisher)
+                .Include(b => b.Genres);
+
+            return View(await allBooks.ToListAsync());
+        }
+
+        public async Task<IActionResult> Search(string title, string author, string publisherName)
+        {
+            var searchContext= blueLibraryConext.Book
+                .Include(b => b.Image)
+                .Include(b => b.Publisher)
+                .Include(b => b.Genres)
+                .Where(b => 
+            (title == null || b.BookName.ToLower().Contains(title.Trim().ToLower())) &&
+            (publisherName == null || (b.Publisher != null && b.Publisher.Name.ToLower().Contains(publisherName.Trim().ToLower()))) &&
+            (author == null || b.Author.ToLower().Contains(author.Trim().ToLower())));
+
+            return View("Watch", await searchContext.ToListAsync());
+        }
+        public async Task<IActionResult> Clear()
+        {
+            var searchContext= blueLibraryConext.Book
+                .Include(b => b.Image)
+                .Include(b => b.Publisher)
+                .Include(b => b.Genres);
+
+            return View("Watch", await searchContext.ToListAsync());
         }
 
         // GET: Books
         public async Task<IActionResult> Index()
         {
-            var blueLibraryContext = _context.Book.Include(b => b.Image).Include(b => b.Publisher);
+            var blueLibraryContext = blueLibraryConext.Book.Include(b => b.Image).Include(b => b.Publisher);
             return View(await blueLibraryContext.ToListAsync());
         }
 
@@ -36,7 +70,7 @@ namespace BlueLibrary.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Book
+            var book = await blueLibraryConext.Book
                 .Include(b => b.Image)
                 .Include(b => b.Publisher)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -52,8 +86,9 @@ namespace BlueLibrary.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
-            ViewData["ImageId"] = new SelectList(_context.BookImage, "Id", "ImageURL");
-            ViewData["PublisherId"] = new SelectList(_context.Publisher, "Id", "Name");
+            ViewData["ImageId"] = new SelectList(
+                blueLibraryConext.BookImage.Include(b => b.Book).Where(b => b.Book == null), "Id", "ImageURL");
+            ViewData["PublisherId"] = new SelectList(blueLibraryConext.Publisher, "Id", "Name");
             return View();
         }
 
@@ -67,12 +102,12 @@ namespace BlueLibrary.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(book);
-                await _context.SaveChangesAsync();
+                blueLibraryConext.Add(book);
+                await blueLibraryConext.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ImageId"] = new SelectList(_context.BookImage, "Id", "Id", book.ImageId);
-            ViewData["PublisherId"] = new SelectList(_context.Publisher, "Id", "Id", book.PublisherId);
+            ViewData["ImageId"] = new SelectList(blueLibraryConext.BookImage, "Id", "Id", book.ImageId);
+            ViewData["PublisherId"] = new SelectList(blueLibraryConext.Publisher, "Id", "Id", book.PublisherId);
             return View(book);
         }
 
@@ -85,13 +120,14 @@ namespace BlueLibrary.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Book.FindAsync(id);
+            var book = await blueLibraryConext.Book.FindAsync(id);
             if (book == null)
             {
                 return NotFound();
             }
-            ViewData["ImageId"] = new SelectList(_context.BookImage, "Id", "Id", book.ImageId);
-            ViewData["PublisherId"] = new SelectList(_context.Publisher, "Id", "Id", book.PublisherId);
+            ViewData["ImageId"] = new SelectList(
+                blueLibraryConext.BookImage.Include(b => b.Book).Where(b => b.Book == null || b.Book.Id == id), "Id", "ImageURL", book.ImageId);
+            ViewData["PublisherId"] = new SelectList(blueLibraryConext.Publisher, "Id", "Name", book.PublisherId);
             return View(book);
         }
 
@@ -112,8 +148,8 @@ namespace BlueLibrary.Controllers
             {
                 try
                 {
-                    _context.Update(book);
-                    await _context.SaveChangesAsync();
+                    blueLibraryConext.Update(book);
+                    await blueLibraryConext.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -128,8 +164,8 @@ namespace BlueLibrary.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ImageId"] = new SelectList(_context.BookImage, "Id", "Id", book.ImageId);
-            ViewData["PublisherId"] = new SelectList(_context.Publisher, "Id", "Id", book.PublisherId);
+            ViewData["ImageId"] = new SelectList(blueLibraryConext.BookImage, "Id", "Id", book.ImageId);
+            ViewData["PublisherId"] = new SelectList(blueLibraryConext.Publisher, "Id", "Id", book.PublisherId);
             return View(book);
         }
 
@@ -142,7 +178,7 @@ namespace BlueLibrary.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Book
+            var book = await blueLibraryConext.Book
                 .Include(b => b.Image)
                 .Include(b => b.Publisher)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -160,15 +196,15 @@ namespace BlueLibrary.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var book = await _context.Book.FindAsync(id);
-            _context.Book.Remove(book);
-            await _context.SaveChangesAsync();
+            var book = await blueLibraryConext.Book.FindAsync(id);
+            blueLibraryConext.Book.Remove(book);
+            await blueLibraryConext.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool BookExists(int id)
         {
-            return _context.Book.Any(e => e.Id == id);
+            return blueLibraryConext.Book.Any(e => e.Id == id);
         }
     }
 }

@@ -27,27 +27,31 @@ namespace BlueLibrary.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Author")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BookName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ImageId")
+                    b.Property<int?>("ImageId")
                         .HasColumnType("int");
 
                     b.Property<int>("PublisherId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("ReleaseDate")
+                    b.Property<DateTime?>("ReleaseDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ImageId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[ImageId] IS NOT NULL");
 
                     b.HasIndex("PublisherId");
 
@@ -111,7 +115,8 @@ namespace BlueLibrary.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
@@ -144,9 +149,7 @@ namespace BlueLibrary.Migrations
                 {
                     b.HasOne("BlueLibrary.Models.BookImage", "Image")
                         .WithOne("Book")
-                        .HasForeignKey("BlueLibrary.Models.Book", "ImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BlueLibrary.Models.Book", "ImageId");
 
                     b.HasOne("BlueLibrary.Models.Publisher", "Publisher")
                         .WithMany("BooksPublisher")

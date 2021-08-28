@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Our Books</h1>
 
 <form>
     <button class="btn-primary" asp-action="Create">
@@ -30,7 +30,7 @@
                 @Html.DisplayNameFor(model => model.Image.ImageURL)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Publisher)
+                @Html.DisplayNameFor(model => model.Publisher.Name)
             </th>
             <th></th>
         </tr>
