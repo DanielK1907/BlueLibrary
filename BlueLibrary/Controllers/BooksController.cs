@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using BlueLibrary.Data;
 using BlueLibrary.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.IO;
+using TweetSharp;
+using System.Net;
 
 namespace BlueLibrary.Controllers
 {
@@ -215,6 +218,52 @@ namespace BlueLibrary.Controllers
         private bool BookExists(int id)
         {
             return blueLibraryConext.Book.Any(e => e.Id == id);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostOnTwitter(String bookName, String Image, String tweets)
+        {
+            string key = "G8eiLF0oqm66BMWSCdxvQOxpD";
+            string secret = "X9jtSMahKw8hPe4b5Xj6ds39DKOLX9ufXaiEVDFvkCmVgKkfBS";
+            string token = "1431627254837260290-1ESplU5nuBxZKTOrWbqUgMNfAwC76H";
+            string tokenSecret = "CFm5gdzzKL0e0Ak1TkukVIMTkg4hThg6eklX3t0RU8JKN";
+
+
+            var service = new TweetSharp.TwitterService(key, secret);
+            service.AuthenticateWith(token, tokenSecret);
+
+            WebClient wc = new WebClient();
+            byte[] bytes = wc.DownloadData("wwwroot/" + Image);
+
+            if (bytes != null)
+            {
+                using (var stream = new MemoryStream(bytes))
+                {
+                    var tweetToPost = new SendTweetWithMediaOptions
+                    {
+                        Status = tweets,
+                        Images = new Dictionary<string, Stream> { { "myPic", stream } }
+                    };
+                    var result = service.SendTweetWithMedia(tweetToPost);
+                    if (result == null)
+                    {
+                        ViewData["Error"] = "Cannot post Tweet";
+                    }
+                }
+            }
+            else
+            {
+                var tweetToPost = new SendTweetOptions
+                {
+                    Status = tweets
+                };
+                var result = service.SendTweet(tweetToPost);
+                if (result == null)
+                {
+                    ViewData["Error"] = "Cannot post Tweet";
+                }
+            }
+            return RedirectToAction(nameof(Watch));
         }
     }
 }
