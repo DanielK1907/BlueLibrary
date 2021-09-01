@@ -59,6 +59,7 @@ namespace BlueLibrary.Controllers
                 .Include(b => b.Publisher)
                 .Include(b => b.Genres);
 
+            ViewData["Genres"] = new SelectList(blueLibraryConext.Genre, "Id", "Name");
             return View("Watch", await searchContext.ToListAsync());
         }
 
