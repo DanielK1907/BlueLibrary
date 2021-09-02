@@ -109,6 +109,14 @@ namespace BlueLibrary.Controllers
 
             if (ModelState.IsValid)
             {
+                String newBookImageURL = bookImage.ImageURL;
+                if (_context.BookImage.FirstOrDefault(bi =>
+                bi.ImageURL.Equals(newBookImageURL) && bi.Id != bookImage.Id) != null)
+                {
+                    ViewData["Error"] = "Book Image with exact same URL already exists";
+                    return View(bookImage);
+                }
+
                 try
                 {
                     _context.Update(bookImage);

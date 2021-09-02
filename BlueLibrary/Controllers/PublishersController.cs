@@ -106,6 +106,14 @@ namespace BlueLibrary.Controllers
 
             if (ModelState.IsValid)
             {
+                String newPublisherName = publisher.Name.ToLower().Trim();
+                if (_context.Genre.FirstOrDefault(p =>
+                    p.Name.ToLower().Trim().Equals(newPublisherName) && p.Id != publisher.Id) != null)
+                {
+                    ViewData["Error"] = "Publisher with exact same name already exists";
+                    return View(publisher);
+                }
+
                 try
                 {
                     _context.Update(publisher);
