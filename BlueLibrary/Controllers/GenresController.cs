@@ -60,6 +60,14 @@ namespace BlueLibrary.Controllers
         {
             if (ModelState.IsValid)
             {
+                String newGenreName = genre.Name.ToLower().Trim();
+                if (_context.Genre.FirstOrDefault(g =>
+                    g.Name.ToLower().Trim().Equals(newGenreName)) != null)
+                {
+                    ViewData["Error"] = "Genre with exact same name already exists";
+                    return View(genre);
+                }
+
                 _context.Add(genre);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

@@ -64,6 +64,10 @@
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
+        @if (ViewBag.Error != null)
+        {
+            <div class="text-danger"><b>@ViewBag.Error</b></div>
+        }
     </div>
 
     <footer class="border-top footer text-muted">
