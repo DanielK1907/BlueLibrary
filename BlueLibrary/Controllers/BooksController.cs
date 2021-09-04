@@ -111,6 +111,18 @@ namespace BlueLibrary.Controllers
         {
             if (ModelState.IsValid)
             {
+                String newBookName = book.BookName.ToLower().Trim();
+                if (blueLibraryConext.Book.FirstOrDefault(b =>
+                    b.BookName.ToLower().Trim().Equals(newBookName)) != null)
+                {
+                    ViewData["ImageId"] = new SelectList(
+                        blueLibraryConext.BookImage.Include(b => b.Book).Where(b => b.Book == null), "Id", "ImageURL");
+                    ViewData["PublisherId"] = new SelectList(blueLibraryConext.Publisher, "Id", "Name");
+                    ViewData["GenresIds"] = new MultiSelectList(blueLibraryConext.Genre, "Id", "Name");
+                    ViewData["Error"] = "Book with exact same name already exists";
+                    return View(book);
+                }
+
                 book.Genres = new List<Genre>();
                 foreach (var genreId in genresIds)
                 {
@@ -120,6 +132,7 @@ namespace BlueLibrary.Controllers
                 await blueLibraryConext.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["ImageId"] = new SelectList(blueLibraryConext.BookImage, "Id", "Id", book.ImageId);
             ViewData["PublisherId"] = new SelectList(blueLibraryConext.Publisher, "Id", "Id", book.PublisherId);
             return View(book);
@@ -165,6 +178,18 @@ namespace BlueLibrary.Controllers
 
             if (ModelState.IsValid)
             {
+                String newBookName = book.BookName.ToLower().Trim();
+                if (blueLibraryConext.Book.FirstOrDefault(b =>
+                    b.BookName.ToLower().Trim().Equals(newBookName) && b.Id != book.Id) != null)
+                {
+                    ViewData["ImageId"] = new SelectList(
+                        blueLibraryConext.BookImage.Include(b => b.Book).Where(b => b.Book == null), "Id", "ImageURL");
+                    ViewData["PublisherId"] = new SelectList(blueLibraryConext.Publisher, "Id", "Name");
+                    ViewData["GenresIds"] = new MultiSelectList(blueLibraryConext.Genre, "Id", "Name");
+                    ViewData["Error"] = "Book with exact same name already exists";
+                    return View(book);
+                }
+
                 try
                 {
                     blueLibraryConext.Book.Remove(book);
