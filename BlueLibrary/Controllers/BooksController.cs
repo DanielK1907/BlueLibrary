@@ -204,11 +204,18 @@ namespace BlueLibrary.Controllers
                     updatedBook.Publisher = book.Publisher;
                     updatedBook.Image = book.Image;
 
-                    updatedBook.Genres = new List<Genre>();
-
-                    foreach (var genreId in genresIds)
+                    if (genresIds.Length > 0)
                     {
-                        updatedBook.Genres.Add(blueLibraryConext.Genre.FirstOrDefault(g => g.Id == genreId));
+                        updatedBook.Genres = new List<Genre>();
+
+                        foreach (var genreId in genresIds)
+                        {
+                            updatedBook.Genres.Add(blueLibraryConext.Genre.FirstOrDefault(g => g.Id == genreId));
+                        }
+                    }
+                    else
+                    {
+                        updatedBook.Genres = book.Genres;
                     }
 
                     blueLibraryConext.Book.Add(updatedBook);
