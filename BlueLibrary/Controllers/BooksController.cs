@@ -134,7 +134,11 @@ namespace BlueLibrary.Controllers
                 return NotFound();
             }
 
-            var book = await blueLibraryConext.Book.FindAsync(id);
+            var book = await blueLibraryConext.Book
+                .Include(b => b.Image)
+                .Include(b => b.Publisher)
+                .Include(b => b.Genres).FirstOrDefaultAsync(b => b.Id == id);
+
             if (book == null)
             {
                 return NotFound();
@@ -142,6 +146,7 @@ namespace BlueLibrary.Controllers
             ViewData["ImageId"] = new SelectList(
                 blueLibraryConext.BookImage.Include(b => b.Book).Where(b => b.Book == null || b.Book.Id == id), "Id", "ImageURL", book.ImageId);
             ViewData["PublisherId"] = new SelectList(blueLibraryConext.Publisher, "Id", "Name", book.PublisherId);
+            ViewData["GenresIds"] = new MultiSelectList(blueLibraryConext.Genre, "Id", "Name");
             return View(book);
         }
 
@@ -151,7 +156,7 @@ namespace BlueLibrary.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BookName,Author,ReleaseDate,Description,ImageId,PublisherId")] Book book)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BookName,Author,ReleaseDate,Description,ImageId,PublisherId, Genres")] Book book, int[] genresIds)
         {
             if (id != book.Id)
             {
@@ -162,7 +167,27 @@ namespace BlueLibrary.Controllers
             {
                 try
                 {
-                    blueLibraryConext.Update(book);
+                    blueLibraryConext.Book.Remove(book);
+
+                    var updatedBook = new Book();
+                    updatedBook.BookName = book.BookName;
+                    updatedBook.Author = book.Author;
+                    updatedBook.ReleaseDate = book.ReleaseDate;
+                    updatedBook.Description = book.Description;
+                    updatedBook.ImageId = book.ImageId;
+                    updatedBook.PublisherId = book.PublisherId;
+                    updatedBook.Publisher = book.Publisher;
+                    updatedBook.Image = book.Image;
+
+                    updatedBook.Genres = new List<Genre>();
+
+                    foreach (var genreId in genresIds)
+                    {
+                        updatedBook.Genres.Add(blueLibraryConext.Genre.FirstOrDefault(g => g.Id == genreId));
+                    }
+
+                    blueLibraryConext.Book.Add(updatedBook);
+
                     await blueLibraryConext.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
