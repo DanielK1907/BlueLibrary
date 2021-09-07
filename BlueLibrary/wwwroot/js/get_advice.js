@@ -6,7 +6,7 @@
     }).done((response) => {
         var text = response.slip.advice;
         const canvas = $("#canvas-tip")[0];
-        canvas.width = 800;
+        canvas.width = 1600;
         var ctx = canvas.getContext('2d');
         ctx.shadowColor = "lemonchiffon";
         ctx.shadowOffsetX = 10;
