@@ -279,7 +279,7 @@ namespace BlueLibrary.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostOnTwitter(String bookName, String Image, String tweets)
+        public async Task<IActionResult> PostOnTwitter(string bookName, string Image, string tweets)
         {
             string key = "G8eiLF0oqm66BMWSCdxvQOxpD";
             string secret = "X9jtSMahKw8hPe4b5Xj6ds39DKOLX9ufXaiEVDFvkCmVgKkfBS";

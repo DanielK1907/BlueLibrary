@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BlueLibrary.Models
 {
@@ -14,7 +11,6 @@ namespace BlueLibrary.Models
 
         [Required]
         [DataType(DataType.Text)]
-        [DisplayName("Name")]
         public String BookName { get; set; }
 
         [Required]
@@ -28,7 +24,8 @@ namespace BlueLibrary.Models
         
         [ForeignKey("BookImage")]
         public int? ImageId { get; set; }
-        
+
+        #nullable enable
         public BookImage? Image { get; set; }
 
         public List<Genre> Genres { get; set; }
