@@ -16,3 +16,12 @@
     column-rule-color: lightcyan;
 }
 
+#random-tip {
+    border-top: 10px;
+}
+
+#canvas-tip-div {
+    border: 4px thick yellow;
+    width: 350px;
+}
+
