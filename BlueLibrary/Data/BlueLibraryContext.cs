@@ -14,14 +14,14 @@ namespace BlueLibrary.Data
         {
         }
 
-        public DbSet<BlueLibrary.Models.Book> Book { get; set; }
+        public DbSet<Book> Book { get; set; }
 
-        public DbSet<BlueLibrary.Models.Publisher> Publisher { get; set; }
+        public DbSet<Publisher> Publisher { get; set; }
 
-        public DbSet<BlueLibrary.Models.BookImage> BookImage { get; set; }
+        public DbSet<BookImage> BookImage { get; set; }
 
-        public DbSet<BlueLibrary.Models.Genre> Genre { get; set; }
+        public DbSet<Genre> Genre { get; set; }
 
-        public DbSet<BlueLibrary.Models.User> User { get; set; }
+        public DbSet<User> User { get; set; }
     }
 }

@@ -29,19 +29,18 @@
                         </li>
                         @if (Context.User != null && Context.User.Claims != null && Context.User.Claims.Count() > 0 && Context.User.IsInRole("Admin"))
                         {
-                            <li class="nav-item dropdown nav-item-manager">
-                                <a class="nav-link dropdown-toggle nav-item-manager text-dark nav-btn" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" asp-area="">
-                                    Manager
-                                </a>
-                                <div class="dropdown-menu nav-item-manager" aria-labelledby="navbarDropdown">
-                                    <a asp-controller="Books" asp-action="Index" class="nav-link text-dark nav-btn">Manage Books</a>
-                                    <a asp-controller="Genres" asp-action="Index" class="nav-link text-dark nav-btn">Manage Genres</a>
-                                    <a asp-controller="Publishers" asp-action="Index" class="nav-link text-dark nav-btn">Manage Publishers</a>
-                                    <a asp-controller="BookImages" asp-action="Index" class="nav-link text-dark nav-btn">Manage BookImages</a>
-                                </div>
-                            </li>
-
-                        }
+            <li class="nav-item dropdown nav-item-manager">
+                <a class="nav-link dropdown-toggle nav-item-manager text-dark nav-btn" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" asp-area="">
+                    Manager
+                </a>
+                <div class="dropdown-menu nav-item-manager" aria-labelledby="navbarDropdown">
+                    <a asp-controller="Books" asp-action="Index" class="nav-link text-dark nav-btn">Manage Books</a>
+                    <a asp-controller="Genres" asp-action="Index" class="nav-link text-dark nav-btn">Manage Genres</a>
+                    <a asp-controller="Publishers" asp-action="Index" class="nav-link text-dark nav-btn">Manage Publishers</a>
+                    <a asp-controller="BookImages" asp-action="Index" class="nav-link text-dark nav-btn">Manage BookImages</a>
+                </div>
+            </li>
+}
                         <li class="nav-item">
                             <a class="nav-link text-dark nav-btn" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
@@ -49,7 +48,7 @@
                     <div class="navbar-nav flex-grow-1 justify-content-end">
                         @if (Context.User != null && Context.User.Claims != null && Context.User.Claims.Count() > 0)
                         {
-                            <a class="nav-item nav-link text-dark nav-btn" asp-area="" asp-controller="Users" asp-action="Logout">Logout</a>
+                            <a class="nav-item nav-link text-dark nav-btn" asp-area="" asp-controller="Users" asp-action="Logout">Logout</a> 
                         }
                         else
                         {
@@ -77,8 +76,10 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"</script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/redirect_to_books_page.js"></script>
+    <script src="~/js/graph_builder.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -39,7 +39,7 @@ namespace BlueLibrary.Controllers
 
         public async Task<IActionResult> Search(string title, string author, string publisherName, int? genreId)
         {
-            var searchContext= blueLibraryConext.Book
+            var searchContext = blueLibraryConext.Book
                 .Include(b => b.Image)
                 .Include(b => b.Publisher)
                 .Include(b => b.Genres)
@@ -54,7 +54,7 @@ namespace BlueLibrary.Controllers
         }
         public async Task<IActionResult> Clear()
         {
-            var searchContext= blueLibraryConext.Book
+            var searchContext = blueLibraryConext.Book
                 .Include(b => b.Image)
                 .Include(b => b.Publisher)
                 .Include(b => b.Genres);
@@ -150,7 +150,8 @@ namespace BlueLibrary.Controllers
             var book = await blueLibraryConext.Book
                 .Include(b => b.Image)
                 .Include(b => b.Publisher)
-                .Include(b => b.Genres).FirstOrDefaultAsync(b => b.Id == id);
+                .Include(b => b.Genres)
+                .FirstOrDefaultAsync(b => b.Id == id);
 
             if (book == null)
             {
@@ -206,7 +207,7 @@ namespace BlueLibrary.Controllers
 
                     if (genresIds.Length > 0)
                     {
-                        updatedBook.Genres = new List<Genre>();
+                         updatedBook.Genres = new List<Genre>();
 
                         foreach (var genreId in genresIds)
                         {
@@ -322,6 +323,19 @@ namespace BlueLibrary.Controllers
                 }
             }
             return RedirectToAction(nameof(Watch));
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GenresWithMostBooks()
+        {
+            var booksGenres = blueLibraryConext.Genre.Include(g => g.Books).Select(g => new
+            {
+                name = g.Name,
+                value = g.Books.Count
+            });
+
+            var booksList = await booksGenres.ToListAsync();
+            return Ok(booksList);
         }
     }
 }
