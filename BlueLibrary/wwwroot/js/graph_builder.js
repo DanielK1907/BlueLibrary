@@ -248,7 +248,7 @@
                 .attr('y', margin / 2.4)
                 .attr('transform', 'rotate(-90)')
                 .attr('text-anchor', 'middle')
-                .text('Books')
+                .text('Publisher')
 
             svg.append('text')
                 .attr('class', 'label')
@@ -262,7 +262,7 @@
                 .attr('x', width / 2 + margin)
                 .attr('y', 40)
                 .attr('text-anchor', 'middle')
-                .text('Genres with most books')
+                .text('Publisher with most genres in book')
 
             svg.append('text')
                 .attr('class', 'source')
