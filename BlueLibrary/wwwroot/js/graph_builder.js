@@ -248,14 +248,14 @@
                 .attr('y', margin / 2.4)
                 .attr('transform', 'rotate(-90)')
                 .attr('text-anchor', 'middle')
-                .text('Publisher')
+                .text('Max amount of genres in book')
 
             svg.append('text')
                 .attr('class', 'label')
                 .attr('x', width / 2 + margin)
                 .attr('y', height + margin * 1.7)
                 .attr('text-anchor', 'middle')
-                .text('Genres')
+                .text('Publisher')
 
             svg.append('text')
                 .attr('class', 'title')
