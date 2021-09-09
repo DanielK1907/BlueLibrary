@@ -168,5 +168,25 @@ namespace BlueLibrary.Controllers
         {
             return _context.Publisher.Any(e => e.Id == id);
         }
+
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> PublisherGenres()
+        {
+            var publisherGenres = _context.Publisher
+                .Select(p => new
+                {
+                    name = p.Name,
+                    value = (_context.Book
+                    .Where(b => b.PublisherId == p.Id)
+                    .OrderBy(b => b.Genres.Count)
+                    .Select(b => b.Genres.Count)
+                    .Last()
+                    )
+                });
+
+            var publisherWithMostGenres = await publisherGenres.ToListAsync();
+            return Ok(publisherWithMostGenres);
+        }
     }
 }
