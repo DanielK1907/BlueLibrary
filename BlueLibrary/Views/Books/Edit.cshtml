@@ -48,7 +48,7 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label asp-for="Genres" class="control-label">Genres: </label>
-                    @Html.DropDownList("GenresIds", (MultiSelectList)ViewBag.GenresIds, new { multiple = "multiple", @class = "form-control", required = "required" })
+                    @Html.DropDownList("GenresIds", ViewBag.GenresIds as MultiSelectList, new { multiple = "multiple", @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
