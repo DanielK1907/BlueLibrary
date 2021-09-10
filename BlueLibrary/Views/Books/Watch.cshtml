@@ -8,14 +8,18 @@
 <br />
 <form>
     <div class="search-inputs">
-        <input type="text" name="title" placeholder="Title" class="mr-3">
-
-        <input type="text" name="author" placeholder="Author" class="mr-3">
-        <input type="text" name="publisherName" placeholder="Publisher" class="mr-3">
+        <input type="text" name="title" placeholder="Title" class="mr-3" />
+        <input type="text" name="author" placeholder="Author" class="mr-3" />
+        <input type="text" name="publisherName" placeholder="Publisher" class="mr-3" />
         <select id="genre-search" name="genreId" class="form-control" asp-items="ViewBag.Genres">
             <option value="" disabled selected>Select a Genere</option>
             <option selected value="">All</option>
         </select>
+        
+        <div>
+            <input type="date" name="startDate" value="0000-01-01" />
+            <input type="date" name="endDate" value="0000-01-01" />
+        </div>
     </div>
     <br />
     <input type="submit" value="Search" asp-action="Search" class="btn btn-primary" />
@@ -28,49 +32,47 @@
     {
         <div style="padding-bottom: 30px; padding-right:15px">
             <div class="card" style="width: 18rem">
-                @if (book.Image != null)
-                {
-            <img class="card-img-top" height="300" src="~/images/@book.Image.ImageURL" alt="Card image cap"> }
-                            else
-                            {
-            <img class="card-img-top" height="300" src="~/images/default.jpg" alt="Card image cap">                }
+                @if (book.Image != null) {
+                    <img class="card-img-top" height="300" src="~/images/@book.Image.ImageURL" alt="Card image cap"> 
+                } else {
+                    <img class="card-img-top" height="300" src="~/images/default.jpg" alt="Card image cap">                
+                }
                 <h4 class="card-title"><b>@book.BookName</b></h4>
                 <p>
                     <i>Author: @book.Author </i><br />
                     <i>Publisher: @book.Publisher.Name</i>
                 </p>
                 <p>
-                    Genres: @foreach (var genre in book.Genres)
-                    {
-            <span>@genre.Name </span>}
+                    Genres: @foreach (var genre in book.Genres) {
+                        <span>@genre.Name </span>
+                    }
                 </p>
                 <div class="card-body">
                     <p class="card-text" title="@book.Description">@book.Description</p>
                 </div>
                 @if (Context.User.IsInRole("Admin"))
                 {
-            <form method="post" asp-action="PostOnTwitter" enctype="multipart/form-data">
-                <input class="form-group" type="hidden" name="bookName" value="@book.BookName" />
-                @if (book.Image != null)
-                {
-            <input class="form-group" type="hidden" name="Image" value="images/@book.Image.ImageURL" /> }
-                                else
-                                {
-            <input class="form-group" type="hidden" name="Image" value="images/default.jpg" />}
-                <label class="control-label mb-1 mt-3 text-left">Share book at our twitter account</label>
-                <div class="row justify-content-center">
-                    <div class="mb-3">
-                        <textarea name="tweets" class="form-control">Check out our new book in stock @book.BookName ...</textarea>
-                    </div>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="mb-3">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fa fa-twitter"></i> Share
-                        </button>
-                    </div>
-                </div>
-            </form>
+                    <form method="post" asp-action="PostOnTwitter" enctype="multipart/form-data">
+                        <input class="form-group" type="hidden" name="bookName" value="@book.BookName" />
+                        @if (book.Image != null) {
+                            <input class="form-group" type="hidden" name="Image" value="images/@book.Image.ImageURL" /> 
+                        } else {
+                            <input class="form-group" type="hidden" name="Image" value="images/default.jpg" />
+                        }
+                        <label class="control-label mb-1 mt-3 text-left">Share book at our twitter account</label>
+                        <div class="row justify-content-center">
+                            <div class="mb-3">
+                                <textarea name="tweets" class="form-control">Check out our new book in stock @book.BookName ...</textarea>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-twitter"></i> Share
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 }
             </div>
         </div>
