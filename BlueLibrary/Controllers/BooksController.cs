@@ -66,7 +66,11 @@ namespace BlueLibrary.Controllers
         // GET: Books
         public async Task<IActionResult> Index()
         {
-            var blueLibraryContext = blueLibraryConext.Book.Include(b => b.Image).Include(b => b.Publisher);
+            var blueLibraryContext = blueLibraryConext.Book
+                .Include(b => b.Image)
+                .Include(b => b.Publisher)
+                .Include(b => b.Genres);
+
             return View(await blueLibraryContext.ToListAsync());
         }
 
