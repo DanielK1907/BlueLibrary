@@ -170,7 +170,7 @@ namespace BlueLibrary.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BookName,Author,ReleaseDate,Description,ImageId,PublisherId, Genres")] Book book, int[] genresIds)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BookName,Author,ReleaseDate,Description,ImageId,PublisherId")] Book book, int[] GenresIds)
         {
             if (id != book.Id)
             {
@@ -205,11 +205,11 @@ namespace BlueLibrary.Controllers
                     updatedBook.Publisher = book.Publisher;
                     updatedBook.Image = book.Image;
 
-                    if (genresIds.Length > 0)
+                    if (GenresIds.Length > 0)
                     {
                          updatedBook.Genres = new List<Genre>();
 
-                        foreach (var genreId in genresIds)
+                        foreach (var genreId in GenresIds)
                         {
                             updatedBook.Genres.Add(blueLibraryConext.Genre.FirstOrDefault(g => g.Id == genreId));
                         }
