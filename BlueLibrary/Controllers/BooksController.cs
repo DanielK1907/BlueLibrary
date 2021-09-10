@@ -37,7 +37,7 @@ namespace BlueLibrary.Controllers
             return View(await allBooks.ToListAsync());
         }
 
-        public async Task<IActionResult> Search(string title, string author, string publisherName, int? genreId)
+        public async Task<IActionResult> Search(string title, string author, string publisherName, int? genreId, DateTime? startDate, DateTime? endDate)
         {
             var searchContext = blueLibraryConext.Book
                 .Include(b => b.Image)
@@ -47,7 +47,9 @@ namespace BlueLibrary.Controllers
             (title == null || b.BookName.ToLower().Contains(title.Trim().ToLower())) &&
             (publisherName == null || (b.Publisher != null && b.Publisher.Name.ToLower().Contains(publisherName.Trim().ToLower()))) &&
             (genreId == null || b.Genres.Contains(blueLibraryConext.Genre.Find(genreId))) &&
-            (author == null || b.Author.ToLower().Contains(author.Trim().ToLower())));
+            (author == null || b.Author.ToLower().Contains(author.Trim().ToLower())) &&
+            (startDate == null || (b.ReleaseDate != null && b.ReleaseDate >= startDate)) &&
+            (endDate == null || (b.ReleaseDate != null && b.ReleaseDate <= endDate)));
 
             ViewData["Genres"] = new SelectList(blueLibraryConext.Genre, "Id", "Name");
             return View("Watch", await searchContext.ToListAsync());
@@ -337,13 +339,15 @@ namespace BlueLibrary.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GenresWithMostBooks()
+        public async Task<IActionResult> BooksByAuthor()
         {
-            var booksGenres = blueLibraryConext.Genre.Include(g => g.Books).Select(g => new
-            {
-                name = g.Name,
-                value = g.Books.Count
-            });
+            var booksGenres = blueLibraryConext.Book
+                .GroupBy(b => b.Author)
+                .Select(g => new
+                {
+                    name = g.Key,
+                    value = g.Count()
+                });
 
             var booksList = await booksGenres.ToListAsync();
             return Ok(booksList);
