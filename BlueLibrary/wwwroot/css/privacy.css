@@ -1,4 +1,27 @@
-﻿#privacy {
-    font-size: 150%;
+﻿@font-face {
+    font-family: Kaisi;
+    src: url(../fonts/KaiseiHarunoUmi-Regular.ttf);
+}
+
+#privacy {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
+
+#privacy-info {
+    font-family: Kaisi;
+    column-count: 2;
+    column-gap: 10px;
+    column-rule-style: dashed;
+    column-rule-width: 3px;
+    column-rule-color: lightcyan;
+}
+
+#random-tip {
+    border-top: 10px;
+}
+
+#canvas-tip-div {
+    border: 4px thick yellow;
+    width: 350px;
+}
+

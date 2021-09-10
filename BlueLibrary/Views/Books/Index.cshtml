@@ -54,7 +54,7 @@
                 @Html.DisplayFor(modelItem => item.Image.ImageURL)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Publisher.Id)
+                @Html.DisplayFor(modelItem => item.Publisher.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -65,3 +65,5 @@
 }
     </tbody>
 </table>
+
+<div id="container" class="shadow-lg"></div>
