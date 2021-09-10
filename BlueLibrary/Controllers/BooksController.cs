@@ -324,5 +324,20 @@ namespace BlueLibrary.Controllers
             }
             return RedirectToAction(nameof(Watch));
         }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> BooksByAuthor()
+        {
+            var booksGenres = blueLibraryConext.Book
+                .GroupBy(b => b.Author)
+                .Select(g => new
+                {
+                    name = g.Key,
+                    value = g.Count()
+                });
+
+            var booksList = await booksGenres.ToListAsync();
+            return Ok(booksList);
+        }
     }
 }
