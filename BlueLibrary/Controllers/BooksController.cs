@@ -37,7 +37,7 @@ namespace BlueLibrary.Controllers
             return View(await allBooks.ToListAsync());
         }
 
-        public async Task<IActionResult> Search(string title, string author, string publisherName, int? genreId)
+        public async Task<IActionResult> Search(string title, string author, string publisherName, int? genreId, DateTime? startDate, DateTime? endDate)
         {
             var searchContext = blueLibraryConext.Book
                 .Include(b => b.Image)
@@ -47,7 +47,9 @@ namespace BlueLibrary.Controllers
             (title == null || b.BookName.ToLower().Contains(title.Trim().ToLower())) &&
             (publisherName == null || (b.Publisher != null && b.Publisher.Name.ToLower().Contains(publisherName.Trim().ToLower()))) &&
             (genreId == null || b.Genres.Contains(blueLibraryConext.Genre.Find(genreId))) &&
-            (author == null || b.Author.ToLower().Contains(author.Trim().ToLower())));
+            (author == null || b.Author.ToLower().Contains(author.Trim().ToLower())) &&
+            (startDate == null || (b.ReleaseDate != null && b.ReleaseDate >= startDate)) &&
+            (endDate == null || (b.ReleaseDate != null && b.ReleaseDate <= endDate)));
 
             ViewData["Genres"] = new SelectList(blueLibraryConext.Genre, "Id", "Name");
             return View("Watch", await searchContext.ToListAsync());
@@ -170,7 +172,7 @@ namespace BlueLibrary.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BookName,Author,ReleaseDate,Description,ImageId,PublisherId, Genres")] Book book, int[] genresIds)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BookName,Author,ReleaseDate,Description,ImageId,PublisherId")] Book book, int[] GenresIds)
         {
             if (id != book.Id)
             {
@@ -205,11 +207,11 @@ namespace BlueLibrary.Controllers
                     updatedBook.Publisher = book.Publisher;
                     updatedBook.Image = book.Image;
 
-                    if (genresIds.Length > 0)
+                    if (GenresIds.Length > 0)
                     {
                          updatedBook.Genres = new List<Genre>();
 
-                        foreach (var genreId in genresIds)
+                        foreach (var genreId in GenresIds)
                         {
                             updatedBook.Genres.Add(blueLibraryConext.Genre.FirstOrDefault(g => g.Id == genreId));
                         }
