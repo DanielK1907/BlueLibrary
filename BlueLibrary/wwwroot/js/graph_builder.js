@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
-    if (window.location.pathname === "/Books/Index") {
+    if (window.location.pathname === "/Genres/Index") {
         $.ajax({
-            url: "/Books/GenresWithMostBooks"
+            url: "/Genres/GenresWithMostBooks"
         }).done(function (data) {
             const svg = d3.select('#container').append("svg").attr("viewBox", `0 0 1000 600`);
 

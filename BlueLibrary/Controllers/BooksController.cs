@@ -324,18 +324,5 @@ namespace BlueLibrary.Controllers
             }
             return RedirectToAction(nameof(Watch));
         }
-
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GenresWithMostBooks()
-        {
-            var booksGenres = blueLibraryConext.Genre.Include(g => g.Books).Select(g => new
-            {
-                name = g.Name,
-                value = g.Books.Count
-            });
-
-            var booksList = await booksGenres.ToListAsync();
-            return Ok(booksList);
-        }
     }
 }
