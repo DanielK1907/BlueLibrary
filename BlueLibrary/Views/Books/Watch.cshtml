@@ -15,10 +15,9 @@
             <option value="" disabled selected>Select a Genere</option>
             <option selected value="">All</option>
         </select>
-        
-        <div>
-            <input type="date" name="startDate" value="0000-01-01" />
-            <input type="date" name="endDate" value="0000-01-01" />
+        <div id="search-date">
+            <input type="date" name="startDate"/>
+            <input type="date" name="endDate"/>
         </div>
     </div>
     <br />
@@ -40,7 +39,13 @@
                 <h4 class="card-title"><b>@book.BookName</b></h4>
                 <p>
                     <i>Author: @book.Author </i><br />
-                    <i>Publisher: @book.Publisher.Name</i>
+                    <i>Publisher: @book.Publisher.Name</i><br />
+                    @if (book.ReleaseDate != null)
+                    {
+                        <i>Release Date: @book.ReleaseDate </i>
+                    } else {
+                        <i>Release Date: Unknown </i>
+                    }
                 </p>
                 <p>
                     Genres: @foreach (var genre in book.Genres) {
