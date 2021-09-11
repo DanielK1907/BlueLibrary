@@ -17,6 +17,6 @@
         gradient.addColorStop(0, "rgb(255, 0, 128)");
         gradient.addColorStop(1, "rgb(255, 153, 51)");
         ctx.fillStyle = gradient;
-        ctx.fillText(text, 10, 50);
+        ctx.fillText(text, 10, 20);
     });
 });
