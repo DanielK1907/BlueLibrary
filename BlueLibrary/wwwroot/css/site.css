@@ -12,6 +12,11 @@ a {
   color: white;
 }
 
+.btn {
+    width: 150px;
+    height: 45px;
+}
+
 .btn-primary {
     border: 0;
     border-radius: 5px;

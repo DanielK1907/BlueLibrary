@@ -68,7 +68,11 @@ namespace BlueLibrary.Controllers
         // GET: Books
         public async Task<IActionResult> Index()
         {
-            var blueLibraryContext = blueLibraryConext.Book.Include(b => b.Image).Include(b => b.Publisher);
+            var blueLibraryContext = blueLibraryConext.Book
+                .Include(b => b.Image)
+                .Include(b => b.Publisher)
+                .Include(b => b.Genres);
+
             return View(await blueLibraryContext.ToListAsync());
         }
 
@@ -195,6 +199,9 @@ namespace BlueLibrary.Controllers
 
                 try
                 {
+                    var bookGenresIds = blueLibraryConext.Book.AsNoTracking()
+                    .Include(b => b.Genres)
+                    .FirstOrDefault(b => b.Id == book.Id).Genres.Select(g => g.Id).ToArray();
                     blueLibraryConext.Book.Remove(book);
 
                     var updatedBook = new Book();
@@ -207,18 +214,22 @@ namespace BlueLibrary.Controllers
                     updatedBook.Publisher = book.Publisher;
                     updatedBook.Image = book.Image;
 
+                    
+                    updatedBook.Genres = new List<Genre>();
+
                     if (GenresIds.Length > 0)
                     {
-                         updatedBook.Genres = new List<Genre>();
-
                         foreach (var genreId in GenresIds)
                         {
                             updatedBook.Genres.Add(blueLibraryConext.Genre.FirstOrDefault(g => g.Id == genreId));
                         }
-                    }
+                    } 
                     else
                     {
-                        updatedBook.Genres = book.Genres;
+                        foreach (var genreId in bookGenresIds)
+                        {
+                            updatedBook.Genres.Add(blueLibraryConext.Genre.FirstOrDefault(g => g.Id == genreId));
+                        }
                     }
 
                     blueLibraryConext.Book.Add(updatedBook);
@@ -328,13 +339,15 @@ namespace BlueLibrary.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GenresWithMostBooks()
+        public async Task<IActionResult> BooksByAuthor()
         {
-            var booksGenres = blueLibraryConext.Genre.Include(g => g.Books).Select(g => new
-            {
-                name = g.Name,
-                value = g.Books.Count
-            });
+            var booksGenres = blueLibraryConext.Book
+                .GroupBy(b => b.Author)
+                .Select(g => new
+                {
+                    name = g.Key,
+                    value = g.Count()
+                });
 
             var booksList = await booksGenres.ToListAsync();
             return Ok(booksList);

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Book Images</h1>
 
 <form>
     <button class="btn-primary" asp-action="Create">
@@ -32,7 +32,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ImageDescription)
             </td>
-            <td>
+            <td style="text-align:end;">
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>

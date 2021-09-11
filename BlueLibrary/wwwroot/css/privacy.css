@@ -10,14 +10,14 @@
 #privacy-info {
     font-family: Kaisi;
     column-count: 2;
-    column-gap: 10px;
+    column-gap: 50px;
     column-rule-style: dashed;
     column-rule-width: 3px;
     column-rule-color: lightcyan;
 }
 
 #random-tip {
-    border-top: 10px;
+    margin-top: 15px;
 }
 
 #canvas-tip-div {

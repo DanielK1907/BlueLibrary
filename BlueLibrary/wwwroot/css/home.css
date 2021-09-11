@@ -83,3 +83,12 @@ input {
     color: pink;
     transition-duration: 500ms;
 }
+
+label {
+    margin-right: 5px;
+    margin-bottom: 0px;
+}
+
+#search-date * {
+    display: inline-flex;
+}
